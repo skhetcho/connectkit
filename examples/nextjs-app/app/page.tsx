@@ -2,6 +2,7 @@
 
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
 import { ConnectKitButton } from 'connectkit';
+import LogDisplay from './LogDisplay';
 
 function App() {
   const account = useAccount();
@@ -41,6 +42,7 @@ function App() {
         ))}
         <div>{status}</div>
         <div>{error?.message}</div>
+        <LogDisplay />
       </div>
     </>
   );

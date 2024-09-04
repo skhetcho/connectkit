@@ -17,6 +17,7 @@ import Alert from '../Alert';
 import { WalletProps, useWallets } from '../../../wallets/useWallets';
 import {
   detectBrowser,
+  isAndroid,
   isCoinbaseWalletConnector,
   isWalletConnectConnector,
 } from '../../../utils';
@@ -95,11 +96,9 @@ const ConnectorItem = ({
   }, [wallet, setReady]);
   */
 
-  let deeplink =
-    (!wallet.isInstalled && isMobile) ||
-      (wallet.shouldDeeplinkDesktop && !isMobile)
-      ? wallet.getWalletConnectDeeplink?.(uri ?? '')
-      : undefined;
+  let deeplink = (isMobile) || (wallet.shouldDeeplinkDesktop && !isMobile)
+    ? wallet.getWalletConnectDeeplink?.(uri ?? '')
+    : undefined;
 
   const redirectToMoreWallets = isMobile && isWalletConnectConnector(wallet.id);
   // Safari requires opening popup on user gesture, so we connect immediately here
@@ -114,7 +113,7 @@ const ConnectorItem = ({
       type="button"
       as={deeplink ? 'a' : undefined}
       href={deeplink ? deeplink : undefined}
-      target={deeplink && detectBrowser() === 'chromium-webview' ? '_blank' : undefined}
+      target={deeplink && isAndroid() ? '_blank' : undefined}
       disabled={context.route !== routes.CONNECTORS}
       onClick={
         deeplink
